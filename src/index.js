@@ -2,6 +2,7 @@ import _ from "lodash";
 import "./style.css";
 import { greetFunction } from "./greetings.js";
 import { createAddTaskDialog } from "./dialog.js";
+import { createTask } from "./newToDo.js";
 
 export const contentBox = document.querySelector("#content");
 const addTodoButton = document.querySelector(".addButton");
