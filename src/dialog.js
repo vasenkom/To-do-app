@@ -1,4 +1,5 @@
 import { contentBox } from "./index.js";
+import { createTask } from "./newToDo.js";
 
 export function createAddTaskDialog(contentBox, addTodoButton) {
   // Dialog settings
@@ -134,6 +135,20 @@ export function createAddTaskDialog(contentBox, addTodoButton) {
   // Event listener for addTodoButton
   addTodoButton.addEventListener("click", () => {
     addTaskDialogHTML.showModal();
+  });
+
+  // Add event listener for form submission
+  addTaskFormHTML.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const newTask = createTask(
+      taskNameInput.value,
+      taskDescriptionInput.value,
+      taskDueDateInput.value,
+      taskPriorityInput.value,
+      taskColourInput.value
+    );
+    console.log("New Task Added:", newTask);
+    addTaskDialogHTML.close();
   });
 
   return addTaskDialogHTML;
