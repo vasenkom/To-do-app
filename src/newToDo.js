@@ -1,9 +1,13 @@
-class Project {
-  constructor(Date, Priority, Colour, CheckList) {
-    this.Date = Date;
-    this.Priority = Priority;
-    this.Colour = Colour;
-    this.CheckList = CheckList;
-  }
+export const todos = [];
+export function createTask(name, description, dueDate, priority, colour) {
+  const newToDo = {
+    name,
+    description,
+    dueDate,
+    priority,
+    colour,
+    completed: false,
+  };
+  todos.push();
+  return newToDo;
 }
-export function addTodoProject() {}
