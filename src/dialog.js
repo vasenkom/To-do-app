@@ -6,6 +6,10 @@ export function createAddTaskDialog(contentBox, addTodoButton) {
   closeDialog.classList.add("closeDialog");
   closeDialog.textContent = "x";
 
+  closeDialog.addEventListener("click", function closeDialogFunction() {
+    addTaskDialogHTML.close();
+  });
+
   const addTaskDialogHTML = document.createElement("dialog");
   addTaskDialogHTML.classList.add("addTaskDialogHTML");
 
@@ -15,26 +19,32 @@ export function createAddTaskDialog(contentBox, addTodoButton) {
   // Task Name
   const taskName = document.createElement("div");
   taskName.classList.add("singleFormQuestion");
+
   const taskNameLabel = document.createElement("label");
   taskNameLabel.htmlFor = "TaskName";
   taskNameLabel.textContent = "Task Name";
+
   const taskNameInput = document.createElement("input");
   taskNameInput.type = "text";
   taskNameInput.name = "TaskName";
   taskNameInput.id = "TaskName";
+
   taskName.appendChild(taskNameLabel);
   taskName.appendChild(taskNameInput);
 
   // Task Description
   const taskDescription = document.createElement("div");
   taskDescription.classList.add("singleFormQuestion");
+
   const taskDescriptionLabel = document.createElement("label");
   taskDescriptionLabel.htmlFor = "taskDescription";
   taskDescriptionLabel.textContent = "Task Description";
+
   const taskDescriptionInput = document.createElement("input");
   taskDescriptionInput.type = "text";
   taskDescriptionInput.name = "taskDescription";
   taskDescriptionInput.id = "taskDescription";
+
   taskDescription.appendChild(taskDescriptionLabel);
   taskDescription.appendChild(taskDescriptionInput);
 
@@ -50,6 +60,7 @@ export function createAddTaskDialog(contentBox, addTodoButton) {
   taskDueDateInput.type = "date";
   taskDueDateInput.name = "taskDueDate";
   taskDueDateInput.id = "taskDueDate";
+
   taskDueDate.appendChild(taskDueDateLabel);
   taskDueDate.appendChild(taskDueDateInput);
 
