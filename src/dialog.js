@@ -1,18 +1,19 @@
 import { contentBox } from "./index.js";
 import { createTask } from "./newToDo.js";
+import { showTaskOnScreen } from "./taskDOM.js";
 
 export function createAddTaskDialog(contentBox, addTodoButton) {
   // Dialog settings
+  const addTaskDialogHTML = document.createElement("dialog");
+  addTaskDialogHTML.classList.add("addTaskDialogHTML");
+
   const closeDialog = document.createElement("button");
   closeDialog.classList.add("closeDialog");
   closeDialog.textContent = "x";
 
-  closeDialog.addEventListener("click", function closeDialogFunction() {
+  closeDialog.addEventListener("click", () => {
     addTaskDialogHTML.close();
   });
-
-  const addTaskDialogHTML = document.createElement("dialog");
-  addTaskDialogHTML.classList.add("addTaskDialogHTML");
 
   const addTaskFormHTML = document.createElement("form");
   addTaskFormHTML.classList.add("addTaskFormHTML");
@@ -148,6 +149,14 @@ export function createAddTaskDialog(contentBox, addTodoButton) {
       taskColourInput.value
     );
     console.log("New Task Added:", newTask);
+
+    //div that will include the tasks (mainly)
+    const taskHolder = document.createElement("div");
+    taskHolder.classList.add("taskHolder");
+
+    //To show the task on the screen
+    showTaskOnScreen(taskHolder);
+
     addTaskDialogHTML.close();
   });
 
