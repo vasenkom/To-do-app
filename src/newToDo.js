@@ -8,6 +8,6 @@ export function createTask(name, description, dueDate, priority, colour) {
     colour,
     completed: false,
   };
-  todos.push();
-  return newToDo;
+  todos.push(newToDo);
+  return { newToDo, todos };
 }
