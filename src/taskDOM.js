@@ -39,18 +39,6 @@ export function showTaskOnScreen() {
       const toDoCard = document.createElement("div");
       toDoCard.classList.add("toDoCard");
 
-      // Add the edit button with value "edit"
-      const taskEditButton = document.createElement("button");
-      taskEditButton.classList.add("taskEditButton");
-      taskEditButton.textContent = "edit";
-      toDoCard.appendChild(taskEditButton);
-
-      // Add the delete button with value "x"
-      const taskDeleteButton = document.createElement("button");
-      taskDeleteButton.classList.add("taskDeleteButton");
-      taskDeleteButton.textContent = "x";
-      toDoCard.appendChild(taskDeleteButton);
-
       // Add checkbox
       const taskCheckBoxDiv = document.createElement("div");
       taskCheckBoxDiv.classList.add("taskCheckBoxDiv");
@@ -58,13 +46,35 @@ export function showTaskOnScreen() {
       taskCheckBox.type = "checkbox";
       taskCheckBox.id = "readStatus";
       taskCheckBoxDiv.appendChild(taskCheckBox);
-      toDoCard.appendChild(taskCheckBoxDiv);
 
       // Add the name of the task
       const taskNameDOM = document.createElement("p");
       taskNameDOM.textContent = task.name;
       taskNameDOM.classList.add("taskNameDOM");
-      toDoCard.appendChild(taskNameDOM);
+      taskCheckBoxDiv.appendChild(taskNameDOM);
+
+      // Add the edit button with value "edit"
+      const taskEditButton = document.createElement("button");
+      taskEditButton.classList.add("taskEditButton");
+      taskEditButton.textContent = "edit";
+
+      // Add the delete button with value "x"
+      const taskDeleteButton = document.createElement("button");
+      taskDeleteButton.classList.add("taskDeleteButton");
+      taskDeleteButton.textContent = "x";
+
+      // DIV for edit and delete button
+      const editDeleteDiv = document.createElement("div");
+      editDeleteDiv.classList.add("editDeleteDiv");
+      editDeleteDiv.appendChild(taskEditButton);
+      editDeleteDiv.appendChild(taskDeleteButton);
+
+      // First line div
+      const firstLineDiv = document.createElement("div");
+      firstLineDiv.classList.add("firstLineDiv");
+      firstLineDiv.appendChild(taskCheckBoxDiv);
+      firstLineDiv.appendChild(editDeleteDiv);
+      toDoCard.appendChild(firstLineDiv);
 
       // Add the description of the task
       const taskDescriptionDOM = document.createElement("p");
