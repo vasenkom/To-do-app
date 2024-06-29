@@ -1,10 +1,10 @@
 export const todos = [];
-export function createTask(name, description, dueDate, priority, colour) {
+export function createTask(name, description, dueDate, colour) {
   const newToDo = {
     name,
     description,
     dueDate,
-    priority,
+    // priority,
     colour,
     completed: false,
   };
