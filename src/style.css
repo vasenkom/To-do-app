@@ -71,8 +71,8 @@ body {
   margin-left: auto;
   margin-right: auto;
   margin-top: 10vh;
-  width: 420px;
-  height: 348px;
+  width: 470px;
+  height: 410px;
   border: 2px solid transparent;
   border-radius: 10px;
 }
@@ -80,15 +80,21 @@ body {
   display: flex;
   flex-direction: column;
 }
+.closeDialogDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
 .closeDialog {
   margin-top: 10px;
-  margin-left: 60vh;
-  border-radius: 50%;
+  margin-right: 10px;
+  background-color: transparent;
   border: none;
-  width: 23px;
-  height: 23px;
   cursor: pointer;
-  text-align: center;
+}
+.closeDialogImg {
+  width: 26px;
+  height: 26px;
 }
 .addTaskFormHTML {
   margin: 10px;
@@ -96,9 +102,14 @@ body {
   flex-direction: column;
   gap: 10px;
 }
+.singleFormQuestion input,
+.singleFormQuestion select {
+  margin-top: 6px;
+  height: 25px;
+}
 .submitAddTaskFormHTML {
   margin-top: 12px;
-  height: 22px;
+  height: 27px;
 }
 ::backdrop {
   background-color: gray;
@@ -112,7 +123,46 @@ body {
   margin-bottom: 10px;
 }
 .toDoCard {
-  border: 1px solid #363432;
+  border: 1px solid transparent;
   border-radius: 10px;
-  width: 80vw;
+  width: 65vw;
+  margin-bottom: 15px;
+}
+.firstLineDiv,
+.taskCheckBoxDiv,
+.editDeleteDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.firstLineDiv {
+  margin: 10px;
+  justify-content: space-between;
+}
+.taskCheckBoxDiv,
+.editDeleteDiv {
+  gap: 10px;
+}
+.taskDescriptionDOM {
+  margin: 10px;
+}
+.taskDeleteButton,
+.taskEditButton {
+  visibility: hidden;
+  border: none;
+  background-color: transparent;
+}
+.toDoCard:hover .taskDeleteButton,
+.toDoCard:hover .taskEditButton {
+  visibility: visible;
+  border: none;
+  background-color: transparent;
+}
+.editTaskButtonImg {
+  width: 19px;
+  height: 19px;
+}
+.deleteTaskButtonImg {
+  width: 23px;
+  height: 23px;
 }
