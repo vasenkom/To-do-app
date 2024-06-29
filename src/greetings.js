@@ -19,3 +19,19 @@ export function greetFunction() {
   greeting.appendChild(greetingText);
   contentBox.appendChild(greeting);
 }
+
+export function getTodayDate() {
+  const today = new Date();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  const year = today.getFullYear();
+  return `${year}-${month}-${day}`;
+}
+
+export function getTomorrowDate() {
+  const today = new Date();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate() + 1).padStart(2, "0");
+  const year = today.getFullYear();
+  return `${year}-${month}-${day}`;
+}
