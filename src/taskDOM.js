@@ -1,5 +1,9 @@
 import { todos } from "./newToDo";
 import { contentBox } from "./index.js";
+import trashcan from "./delete2.png";
+import edit from "./edit.png";
+import { getTodayDate } from "./greetings.js";
+import { getTomorrowDate } from "./greetings.js";
 
 export function groupTasksByDate() {
   const groupedTasks = {};
@@ -30,14 +34,41 @@ export function showTaskOnScreen() {
     const dateHeader = document.createElement("div");
     dateHeader.classList.add("singleDateHolder");
 
+    // Date adding
     const singleDateDOM = document.createElement("p");
     singleDateDOM.classList.add("singleDateDOM");
-    singleDateDOM.textContent = dueDate;
+    const todayDate = getTodayDate();
+    const tomorrowDate = getTomorrowDate();
+
+    console.log(todayDate); // debugging
+    console.log(dueDate); // debugging
+
+    if (dueDate === todayDate) {
+      singleDateDOM.textContent = "Today, " + dueDate;
+    } else if (dueDate === tomorrowDate) {
+      singleDateDOM.textContent = "Tomorrow, " + dueDate;
+    } else {
+      singleDateDOM.textContent = dueDate;
+    }
     dateHeader.appendChild(singleDateDOM);
 
     groupedTasks[dueDate].forEach((task) => {
       const toDoCard = document.createElement("div");
       toDoCard.classList.add("toDoCard");
+
+      //Task colour
+      if (task.colour == "yellow") {
+        toDoCard.style.backgroundColor = "#fffaea";
+      }
+      if (task.colour == "red") {
+        toDoCard.style.backgroundColor = "#f4dede";
+      }
+      if (task.colour == "green") {
+        toDoCard.style.backgroundColor = "#daefd2";
+      }
+      if (task.colour == "blue") {
+        toDoCard.style.backgroundColor = "#deedf8";
+      }
 
       // Add checkbox
       const taskCheckBoxDiv = document.createElement("div");
@@ -56,12 +87,18 @@ export function showTaskOnScreen() {
       // Add the edit button with value "edit"
       const taskEditButton = document.createElement("button");
       taskEditButton.classList.add("taskEditButton");
-      taskEditButton.textContent = "edit";
+      const editTaskButtonImg = document.createElement("img");
+      editTaskButtonImg.classList.add("editTaskButtonImg");
+      editTaskButtonImg.src = edit;
+      taskEditButton.appendChild(editTaskButtonImg);
 
-      // Add the delete button with value "x"
+      // Add the delete button
       const taskDeleteButton = document.createElement("button");
       taskDeleteButton.classList.add("taskDeleteButton");
-      taskDeleteButton.textContent = "x";
+      const deleteTaskButtonImg = document.createElement("img");
+      deleteTaskButtonImg.classList.add("deleteTaskButtonImg");
+      deleteTaskButtonImg.src = trashcan;
+      taskDeleteButton.appendChild(deleteTaskButtonImg);
 
       // DIV for edit and delete button
       const editDeleteDiv = document.createElement("div");
