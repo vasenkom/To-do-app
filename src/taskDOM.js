@@ -1,22 +1,22 @@
-import { todos } from "./newToDo";
-import { contentBox } from "./index.js";
-import trashcan from "./delete2.png";
-import edit from "./edit.png";
-import { getTodayDate } from "./greetings.js";
-import { getTomorrowDate } from "./greetings.js";
+import { todos, createTask } from "./newToDo";
+import { contentBox } from "./domElements.js";
+import trashcan from "./img/delete2.png";
+import edit from "./img/edit.png";
+import { getTodayDate, getTomorrowDate } from "./greetings.js";
+import { addCheckboxListeners } from "./eventListeners.js";
 
 export function groupTasksByDate() {
-  const groupedTasks = {};
+  const groupedTasksAll = {};
   todos.forEach((task) => {
-    if (!groupedTasks[task.dueDate]) {
-      groupedTasks[task.dueDate] = [];
+    if (!groupedTasksAll[task.dueDate]) {
+      groupedTasksAll[task.dueDate] = [];
     }
-    groupedTasks[task.dueDate].push(task);
+    groupedTasksAll[task.dueDate].push(task);
   });
-  return groupedTasks;
+  return groupedTasksAll;
 }
 
-export function showTaskOnScreen() {
+export function showTaskOnScreen(groupedBy) {
   let taskHolder = document.querySelector(".taskHolder");
 
   if (!taskHolder) {
@@ -28,54 +28,22 @@ export function showTaskOnScreen() {
   // Clear taskHolder content before using again
   taskHolder.innerHTML = "";
 
-  const groupedTasks = groupTasksByDate();
+  const groupedTasks = groupedBy || groupTasksByDate();
 
   Object.keys(groupedTasks).forEach((dueDate) => {
-    const dateHeader = document.createElement("div");
-    dateHeader.classList.add("singleDateHolder");
-
-    // Date adding
-    const singleDateDOM = document.createElement("p");
-    singleDateDOM.classList.add("singleDateDOM");
-    const todayDate = getTodayDate();
-    const tomorrowDate = getTomorrowDate();
-
-    console.log(todayDate); // debugging
-    console.log(dueDate); // debugging
-
-    if (dueDate === todayDate) {
-      singleDateDOM.textContent = "Today, " + dueDate;
-    } else if (dueDate === tomorrowDate) {
-      singleDateDOM.textContent = "Tomorrow, " + dueDate;
-    } else {
-      singleDateDOM.textContent = dueDate;
-    }
-    dateHeader.appendChild(singleDateDOM);
+    const { dateHeader } = addTodayDateOnScreen(dueDate);
 
     groupedTasks[dueDate].forEach((task) => {
       const toDoCard = document.createElement("div");
       toDoCard.classList.add("toDoCard");
-
-      //Task colour
-      if (task.colour == "yellow") {
-        toDoCard.style.backgroundColor = "#fffaea";
-      }
-      if (task.colour == "red") {
-        toDoCard.style.backgroundColor = "#f4dede";
-      }
-      if (task.colour == "green") {
-        toDoCard.style.backgroundColor = "#daefd2";
-      }
-      if (task.colour == "blue") {
-        toDoCard.style.backgroundColor = "#deedf8";
-      }
 
       // Add checkbox
       const taskCheckBoxDiv = document.createElement("div");
       taskCheckBoxDiv.classList.add("taskCheckBoxDiv");
       const taskCheckBox = document.createElement("input");
       taskCheckBox.type = "checkbox";
-      taskCheckBox.id = "readStatus";
+      taskCheckBox.checked = task.completed;
+      taskCheckBox.dataset.taskId = task.id;
       taskCheckBoxDiv.appendChild(taskCheckBox);
 
       // Add the name of the task
@@ -122,10 +90,61 @@ export function showTaskOnScreen() {
       dateHeader.appendChild(toDoCard);
 
       taskDeleteButton.addEventListener("click", function () {
+        // Remove the task from the DOM
         dateHeader.removeChild(toDoCard);
+
+        // Find the index of the task in the todos []
+        const taskIndex = todos.findIndex((t) => t === task);
+
+        if (taskIndex > -1) {
+          // Remove the task from the todos []
+          todos.splice(taskIndex, 1);
+
+          console.log("Updated todos:", todos); // debugging
+        }
+      });
+
+      // Add event listener to the checkbox
+      taskCheckBox.addEventListener("change", function () {
+        const taskId = this.dataset.taskId;
+        const taskToUpdate = todos.find((t) => t.id === taskId);
+        taskToUpdate.completed = this.checked;
+
+        taskNameDOM.style.textDecoration = taskToUpdate.completed
+          ? "line-through"
+          : "none";
+        taskDescriptionDOM.style.textDecoration = taskToUpdate.completed
+          ? "line-through"
+          : "none";
       });
     });
 
     taskHolder.appendChild(dateHeader);
+    console.log(todos.length);
   });
+}
+
+function addTodayDateOnScreen(dueDate) {
+  const dateHeader = document.createElement("div");
+  dateHeader.classList.add("singleDateHolder");
+
+  // Date adding
+  const singleDateDOM = document.createElement("p");
+  singleDateDOM.classList.add("singleDateDOM");
+  const todayDate = getTodayDate();
+  const tomorrowDate = getTomorrowDate();
+
+  console.log(todayDate); // debugging
+  console.log(dueDate); // debugging
+
+  if (dueDate === todayDate) {
+    singleDateDOM.textContent = "Today, " + dueDate;
+  } else if (dueDate === tomorrowDate) {
+    singleDateDOM.textContent = "Tomorrow, " + dueDate;
+  } else {
+    singleDateDOM.textContent = dueDate;
+  }
+  dateHeader.appendChild(singleDateDOM);
+
+  return { dateHeader };
 }

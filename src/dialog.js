@@ -1,9 +1,44 @@
-import { contentBox } from "./index.js";
 import { createTask } from "./newToDo.js";
 import { showTaskOnScreen } from "./taskDOM.js";
-import close from "./close.png";
+import { groupTasksByDate } from "./taskDOM.js";
+import close from "./img/close.png";
 
 export function createAddTaskDialog(contentBox, addTodoButton) {
+  const { addTaskDialogHTML, addTaskFormHTML, taskInputs } =
+    createAddTaskDialogDOM(contentBox);
+
+  // Event listener for addTodoButton
+  addTodoButton.addEventListener("click", () => {
+    addTaskDialogHTML.showModal();
+  });
+
+  // Add event listener for form submission
+  addTaskFormHTML.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const newTask = createTask(
+      taskInputs.taskNameInput.value,
+      taskInputs.taskDescriptionInput.value,
+      taskInputs.taskDueDateInput.value,
+      taskInputs.taskPriorityInput.value
+      // taskInputs.taskColourInput.value
+    );
+    console.log("New Task Added:", newTask);
+
+    //div that will include the tasks (mainly)
+    const taskHolder = document.createElement("div");
+    taskHolder.classList.add("taskHolder");
+
+    //To show the task on the screen
+    groupTasksByDate();
+    showTaskOnScreen(groupTasksByDate());
+
+    addTaskDialogHTML.close();
+  });
+
+  return addTaskDialogHTML;
+}
+
+function createAddTaskDialogDOM(contentBox) {
   // Dialog settings
   const addTaskDialogHTML = document.createElement("dialog");
   addTaskDialogHTML.classList.add("addTaskDialogHTML");
@@ -23,6 +58,20 @@ export function createAddTaskDialog(contentBox, addTodoButton) {
     addTaskDialogHTML.close();
   });
 
+  closeDialogDiv.appendChild(closeDialog);
+  addTaskDialogHTML.appendChild(closeDialogDiv);
+  contentBox.appendChild(addTaskDialogHTML);
+
+  const { addTaskFormHTML, taskInputs } = createAddTaskForm();
+
+  // Append the form to the dialog
+  addTaskDialogHTML.appendChild(addTaskFormHTML);
+
+  return { addTaskDialogHTML, addTaskFormHTML, taskInputs };
+}
+
+function createAddTaskForm() {
+  // Create a Form
   const addTaskFormHTML = document.createElement("form");
   addTaskFormHTML.classList.add("addTaskFormHTML");
 
@@ -75,51 +124,51 @@ export function createAddTaskDialog(contentBox, addTodoButton) {
   taskDueDate.appendChild(taskDueDateLabel);
   taskDueDate.appendChild(taskDueDateInput);
 
-  //   // Priority
-  //   const taskPriority = document.createElement("div");
-  //   taskPriority.classList.add("singleFormQuestion");
+  // Priority
+  const taskPriority = document.createElement("div");
+  taskPriority.classList.add("singleFormQuestion");
 
-  //   const taskPriorityLabel = document.createElement("label");
-  //   taskPriorityLabel.htmlFor = "taskPriority";
-  //   taskPriorityLabel.textContent = "Task Priority";
+  const taskPriorityLabel = document.createElement("label");
+  taskPriorityLabel.htmlFor = "taskPriority";
+  taskPriorityLabel.textContent = "Task Priority";
 
-  //   const taskPriorityInput = document.createElement("select");
-  //   taskPriorityInput.name = "taskPriority";
-  //   taskPriorityInput.id = "taskPriority";
+  const taskPriorityInput = document.createElement("select");
+  taskPriorityInput.name = "taskPriority";
+  taskPriorityInput.id = "taskPriority";
 
-  //   const priorities = ["High", "Medium", "Low"];
-  //   priorities.forEach((priority) => {
-  //     const option = document.createElement("option");
-  //     option.value = priority.toLowerCase();
-  //     option.textContent = priority;
-  //     taskPriorityInput.appendChild(option);
-  //   });
-
-  //   taskPriority.appendChild(taskPriorityLabel);
-  //   taskPriority.appendChild(taskPriorityInput);
-
-  // Colour
-  const taskColour = document.createElement("div");
-  taskColour.classList.add("singleFormQuestion");
-
-  const taskColourLabel = document.createElement("label");
-  taskColourLabel.htmlFor = "taskColour";
-  taskColourLabel.textContent = "Task Colour";
-
-  const taskColourInput = document.createElement("select");
-  taskColourInput.name = "taskColour";
-  taskColourInput.id = "taskColour";
-
-  const colours = ["Blue", "Red", "Green", "Yellow"];
-  colours.forEach((colour) => {
+  const priorities = ["High", "Medium", "Low"];
+  priorities.forEach((priority) => {
     const option = document.createElement("option");
-    option.value = colour.toLowerCase();
-    option.textContent = colour;
-    taskColourInput.appendChild(option);
+    option.value = priority.toLowerCase();
+    option.textContent = priority;
+    taskPriorityInput.appendChild(option);
   });
 
-  taskColour.appendChild(taskColourLabel);
-  taskColour.appendChild(taskColourInput);
+  taskPriority.appendChild(taskPriorityLabel);
+  taskPriority.appendChild(taskPriorityInput);
+
+  // // // Colour
+  // const taskColour = document.createElement("div");
+  // taskColour.classList.add("singleFormQuestion");
+
+  // const taskColourLabel = document.createElement("label");
+  // taskColourLabel.htmlFor = "taskColour";
+  // taskColourLabel.textContent = "Task Colour";
+
+  // const taskColourInput = document.createElement("select");
+  // taskColourInput.name = "taskColour";
+  // taskColourInput.id = "taskColour";
+
+  // const colours = ["Blue", "Red", "Green", "Yellow"];
+  // colours.forEach((colour) => {
+  //   const option = document.createElement("option");
+  //   option.value = colour.toLowerCase();
+  //   option.textContent = colour;
+  //   taskColourInput.appendChild(option);
+  // });
+
+  // taskColour.appendChild(taskColourLabel);
+  // taskColour.appendChild(taskColourInput);
 
   // Submit button
   const submitAddTaskFormHTML = document.createElement("button");
@@ -131,44 +180,16 @@ export function createAddTaskDialog(contentBox, addTodoButton) {
   addTaskFormHTML.appendChild(taskName);
   addTaskFormHTML.appendChild(taskDescription);
   addTaskFormHTML.appendChild(taskDueDate);
-  //   addTaskFormHTML.appendChild(taskPriority);
-  addTaskFormHTML.appendChild(taskColour);
+  addTaskFormHTML.appendChild(taskPriority);
+  // addTaskFormHTML.appendChild(taskColour);
   addTaskFormHTML.appendChild(submitAddTaskFormHTML);
 
-  // Append the form to the dialog
-  closeDialogDiv.appendChild(closeDialog);
-  addTaskDialogHTML.appendChild(closeDialogDiv);
-  addTaskDialogHTML.appendChild(addTaskFormHTML);
+  const taskInputs = {
+    taskNameInput,
+    taskDescriptionInput,
+    taskDueDateInput,
+    taskPriorityInput,
+  };
 
-  // Append the dialog to the content box
-  contentBox.appendChild(addTaskDialogHTML);
-
-  // Event listener for addTodoButton
-  addTodoButton.addEventListener("click", () => {
-    addTaskDialogHTML.showModal();
-  });
-
-  // Add event listener for form submission
-  addTaskFormHTML.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const newTask = createTask(
-      taskNameInput.value,
-      taskDescriptionInput.value,
-      taskDueDateInput.value,
-      //   taskPriorityInput.value,
-      taskColourInput.value
-    );
-    console.log("New Task Added:", newTask);
-
-    //div that will include the tasks (mainly)
-    const taskHolder = document.createElement("div");
-    taskHolder.classList.add("taskHolder");
-
-    //To show the task on the screen
-    showTaskOnScreen(taskHolder);
-
-    addTaskDialogHTML.close();
-  });
-
-  return addTaskDialogHTML;
+  return { addTaskFormHTML, taskInputs };
 }
