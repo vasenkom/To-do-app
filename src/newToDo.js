@@ -1,13 +1,20 @@
 export const todos = [];
-export function createTask(name, description, dueDate, colour) {
-  const newToDo = {
+
+export function createTask(
+  name,
+  description,
+  dueDate,
+  priority,
+  completed = false
+) {
+  const task = {
+    id: Date.now().toString(), // identifier for each task
     name,
     description,
     dueDate,
-    // priority,
-    colour,
-    completed: false,
+    priority,
+    completed,
   };
-  todos.push(newToDo);
-  return { newToDo, todos };
+  todos.push(task);
+  return task;
 }
