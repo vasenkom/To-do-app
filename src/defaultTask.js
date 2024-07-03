@@ -1,19 +1,18 @@
-import { todos } from "./newToDo";
+import { todos, createTask } from "./newToDo";
 import { getTodayDate } from "./greetings";
-import { createTask } from "./newToDo.js";
 import { showTaskOnScreen } from "./taskDOM.js";
+import { groupTasksByDate } from "./taskDOM.js";
 
 export function addDefaultTask() {
   const todayDate = getTodayDate();
-  if (todos.length == 0) {
+  if (todos.length < 1) {
     const defaultTask = createTask(
       "Add your first task",
       "Do it by clicking on Add Task in menu section",
       todayDate,
-      //   taskPriorityInput.value,
-      "green"
+      "High",
+      false
     );
-
-    showTaskOnScreen();
+    showTaskOnScreen(groupTasksByDate());
   }
 }
