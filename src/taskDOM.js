@@ -2,6 +2,9 @@ import { todos, createTask } from "./newToDo";
 import { contentBox } from "./domElements.js";
 import trashcan from "./img/delete2.png";
 import edit from "./img/edit.png";
+import highPriority from "./img/highPriority.png";
+import mediumPriority from "./img/mediumPriority.png";
+import lowPriority from "./img/lowPriority.png";
 import { getTodayDate, getTomorrowDate } from "./greetings.js";
 import { addCheckboxListeners } from "./eventListeners.js";
 
@@ -82,12 +85,66 @@ export function showTaskOnScreen(groupedBy) {
       toDoCard.appendChild(firstLineDiv);
 
       // Add the description of the task
-      const taskDescriptionDOM = document.createElement("p");
+      const taskDescriptionDOM = document.createElement("p"); // Second line of the todo card
       taskDescriptionDOM.textContent = task.description;
       taskDescriptionDOM.classList.add("taskDescriptionDOM");
       toDoCard.appendChild(taskDescriptionDOM);
 
       dateHeader.appendChild(toDoCard);
+
+      // Third line div that will have priority
+      const thirdLineDiv = document.createElement("div");
+      thirdLineDiv.classList.add("priorityDiv");
+
+      // High priority img
+      const highPriorityImg = document.createElement("img");
+      highPriorityImg.classList.add("priorityImg");
+      highPriorityImg.src = highPriority;
+      const highPriorityText = document.createElement("span");
+      highPriorityText.textContent = "High Priority";
+      highPriorityText.classList.add("priorityText");
+
+      // Medium priority img
+      const mediumPriorityImg = document.createElement("img");
+      mediumPriorityImg.classList.add("priorityImg");
+      mediumPriorityImg.src = mediumPriority;
+      const mediumPriorityText = document.createElement("span");
+      mediumPriorityText.textContent = "Medium Priority";
+      mediumPriorityText.classList.add("priorityText");
+
+      // Low priority img
+      const lowPriorityImg = document.createElement("img");
+      lowPriorityImg.classList.add("priorityImg");
+      lowPriorityImg.src = lowPriority;
+      const lowPriorityText = document.createElement("span");
+      lowPriorityText.textContent = "Low Priority";
+      lowPriorityText.classList.add("priorityText");
+
+      // Check and append based on task priority
+      if (task.priority == "high" || task.priority == "High") {
+        console.log("High");
+        thirdLineDiv.style.backgroundColor = "#fddfdf";
+        thirdLineDiv.appendChild(highPriorityImg);
+        thirdLineDiv.appendChild(highPriorityText);
+        console.log("High priority task added:", task.name);
+      } else if (task.priority == "medium" || task.priority == "Medium") {
+        console.log("Medium");
+        thirdLineDiv.style.backgroundColor = "#ffffc9";
+        thirdLineDiv.appendChild(mediumPriorityImg);
+        thirdLineDiv.appendChild(mediumPriorityText);
+        console.log("Medium priority task added:", task.name);
+      } else if (task.priority == "low") {
+        console.log(task.priority == "low" || task.priority == "Low");
+        thirdLineDiv.style.backgroundColor = "#e0ffe0";
+        thirdLineDiv.appendChild(lowPriorityImg);
+        thirdLineDiv.appendChild(lowPriorityText);
+        console.log("Low priority task added:", task.name);
+      }
+
+      // Check if elements are appended correctly
+      console.log("Priority div content:", thirdLineDiv.innerHTML);
+
+      toDoCard.appendChild(thirdLineDiv);
 
       taskDeleteButton.addEventListener("click", function () {
         // Remove the task from the DOM
