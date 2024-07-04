@@ -1,5 +1,6 @@
 import { createTask } from "./newToDo.js";
 import { showTaskOnScreen } from "./taskDOM.js";
+import { getTodayDate } from "./greetings";
 import { groupTasksByDate } from "./taskDOM.js";
 import close from "./img/close.png";
 
@@ -117,7 +118,8 @@ function createAddTaskForm() {
 
   const taskDueDateInput = document.createElement("input");
   taskDueDateInput.type = "date";
-  taskDueDateInput.value = "2024-06-29";
+  const todayDate = getTodayDate();
+  taskDueDateInput.value = todayDate;
   taskDueDateInput.name = "taskDueDate";
   taskDueDateInput.id = "taskDueDate";
 
