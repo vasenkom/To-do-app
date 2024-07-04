@@ -169,6 +169,22 @@ body {
   height: 19px;
 }
 .deleteTaskButtonImg {
-  width: 23px;
-  height: 23px;
+  width: 20px;
+  height: 20px;
+}
+.priorityDiv {
+  border-radius: 5px;
+  width: 140px;
+  height: 30px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.priorityImg {
+  width: 20px;
+  height: 20px;
+}
+.priorityText {
+  font-size: 13px;
 }
