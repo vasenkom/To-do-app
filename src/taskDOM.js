@@ -7,6 +7,7 @@ import mediumPriority from "./img/mediumPriority.png";
 import lowPriority from "./img/lowPriority.png";
 import { getTodayDate, getTomorrowDate } from "./greetings.js";
 import { addCheckboxListeners } from "./eventListeners.js";
+import { createEditTaskDialogDOM } from "./editTask.js";
 
 export function groupTasksByDate() {
   const groupedTasksAll = {};
@@ -122,19 +123,19 @@ export function showTaskOnScreen(groupedBy) {
 
       // Check and append based on task priority
       if (task.priority == "high" || task.priority == "High") {
-        console.log("High");
+        console.log("High"); // debugging
         thirdLineDiv.style.backgroundColor = "#fddfdf";
         thirdLineDiv.appendChild(highPriorityImg);
         thirdLineDiv.appendChild(highPriorityText);
         console.log("High priority task added:", task.name);
       } else if (task.priority == "medium" || task.priority == "Medium") {
-        console.log("Medium");
+        console.log("Medium"); // debugging
         thirdLineDiv.style.backgroundColor = "#ffffc9";
         thirdLineDiv.appendChild(mediumPriorityImg);
         thirdLineDiv.appendChild(mediumPriorityText);
         console.log("Medium priority task added:", task.name);
-      } else if (task.priority == "low") {
-        console.log(task.priority == "low" || task.priority == "Low");
+      } else if (task.priority == "low" || task.priority == "Low") {
+        console.log("low"); // debugging
         thirdLineDiv.style.backgroundColor = "#e0ffe0";
         thirdLineDiv.appendChild(lowPriorityImg);
         thirdLineDiv.appendChild(lowPriorityText);
@@ -146,7 +147,7 @@ export function showTaskOnScreen(groupedBy) {
 
       toDoCard.appendChild(thirdLineDiv);
 
-      taskDeleteButton.addEventListener("click", function () {
+      taskDeleteButton.addEventListener("click", () => {
         // Remove the task from the DOM
         dateHeader.removeChild(toDoCard);
 
@@ -159,6 +160,16 @@ export function showTaskOnScreen(groupedBy) {
 
           console.log("Updated todos:", todos); // debugging
         }
+      });
+
+      taskEditButton.addEventListener("click", () => {
+        console.log("Edit button was clicked"); // debugging
+        const { editTaskDialogHTML } = createEditTaskDialogDOM(
+          contentBox,
+          task.id
+        );
+        editTaskDialogHTML.showModal();
+        console.log("Dialog should be shown now"); // debugging
       });
 
       // Add event listener to the checkbox
