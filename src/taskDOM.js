@@ -1,4 +1,3 @@
-import { todos, createTask } from "./newToDo";
 import { contentBox } from "./domElements.js";
 import trashcan from "./img/delete2.png";
 import edit from "./img/edit.png";
@@ -6,18 +5,18 @@ import highPriority from "./img/highPriority.png";
 import mediumPriority from "./img/mediumPriority.png";
 import lowPriority from "./img/lowPriority.png";
 import { getTodayDate, getTomorrowDate } from "./greetings.js";
-import { addCheckboxListeners } from "./eventListeners.js";
 import { createEditTaskDialogDOM } from "./editTask.js";
 
 export function groupTasksByDate() {
-  const groupedTasksAll = {};
-  todos.forEach((task) => {
-    if (!groupedTasksAll[task.dueDate]) {
-      groupedTasksAll[task.dueDate] = [];
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  const groupedTasks = tasks.reduce((acc, task) => {
+    if (!acc[task.dueDate]) {
+      acc[task.dueDate] = [];
     }
-    groupedTasksAll[task.dueDate].push(task);
-  });
-  return groupedTasksAll;
+    acc[task.dueDate].push(task);
+    return acc;
+  }, {});
+  return groupedTasks;
 }
 
 export function showTaskOnScreen(groupedBy) {
@@ -123,60 +122,50 @@ export function showTaskOnScreen(groupedBy) {
 
       // Check and append based on task priority
       if (task.priority == "high" || task.priority == "High") {
-        console.log("High"); // debugging
         thirdLineDiv.style.backgroundColor = "#fddfdf";
         thirdLineDiv.appendChild(highPriorityImg);
         thirdLineDiv.appendChild(highPriorityText);
-        console.log("High priority task added:", task.name);
       } else if (task.priority == "medium" || task.priority == "Medium") {
-        console.log("Medium"); // debugging
         thirdLineDiv.style.backgroundColor = "#ffffc9";
         thirdLineDiv.appendChild(mediumPriorityImg);
         thirdLineDiv.appendChild(mediumPriorityText);
-        console.log("Medium priority task added:", task.name);
       } else if (task.priority == "low" || task.priority == "Low") {
-        console.log("low"); // debugging
         thirdLineDiv.style.backgroundColor = "#e0ffe0";
         thirdLineDiv.appendChild(lowPriorityImg);
         thirdLineDiv.appendChild(lowPriorityText);
-        console.log("Low priority task added:", task.name);
       }
-
-      // Check if elements are appended correctly
-      console.log("Priority div content:", thirdLineDiv.innerHTML);
 
       toDoCard.appendChild(thirdLineDiv);
 
+      // Event listener for a taskDeleteButton
       taskDeleteButton.addEventListener("click", () => {
         // Remove the task from the DOM
         dateHeader.removeChild(toDoCard);
 
-        // Find the index of the task in the todos []
-        const taskIndex = todos.findIndex((t) => t === task);
+        // Remove the task from local storage
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        const updatedTasks = tasks.filter((t) => t.id !== task.id);
+        localStorage.setItem("tasks", JSON.stringify(updatedTasks));
 
-        if (taskIndex > -1) {
-          // Remove the task from the todos []
-          todos.splice(taskIndex, 1);
-
-          console.log("Updated todos:", todos); // debugging
-        }
+        // Refresh the task list on screen
+        showTaskOnScreen();
       });
 
       taskEditButton.addEventListener("click", () => {
-        console.log("Edit button was clicked"); // debugging
         const { editTaskDialogHTML } = createEditTaskDialogDOM(
           contentBox,
           task.id
         );
         editTaskDialogHTML.showModal();
-        console.log("Dialog should be shown now"); // debugging
       });
 
       // Add event listener to the checkbox
       taskCheckBox.addEventListener("change", function () {
-        const taskId = this.dataset.taskId;
-        const taskToUpdate = todos.find((t) => t.id === taskId);
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        const taskToUpdate = tasks.find((t) => t.id === task.id);
         taskToUpdate.completed = this.checked;
+
+        localStorage.setItem("tasks", JSON.stringify(tasks));
 
         taskNameDOM.style.textDecoration = taskToUpdate.completed
           ? "line-through"
@@ -188,7 +177,6 @@ export function showTaskOnScreen(groupedBy) {
     });
 
     taskHolder.appendChild(dateHeader);
-    console.log(todos.length);
   });
 }
 
@@ -201,9 +189,6 @@ function addTodayDateOnScreen(dueDate) {
   singleDateDOM.classList.add("singleDateDOM");
   const todayDate = getTodayDate();
   const tomorrowDate = getTomorrowDate();
-
-  console.log(todayDate); // debugging
-  console.log(dueDate); // debugging
 
   if (dueDate === todayDate) {
     singleDateDOM.textContent = "Today, " + dueDate;

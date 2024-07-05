@@ -1,6 +1,6 @@
-import { createTask } from "./newToDo.js";
+import { populateStorage } from "./newToDo.js";
 import { showTaskOnScreen } from "./taskDOM.js";
-import { getTodayDate } from "./greetings";
+import { getTodayDate } from "./greetings.js";
 import { groupTasksByDate } from "./taskDOM.js";
 import close from "./img/close.png";
 
@@ -16,21 +16,24 @@ export function createAddTaskDialog(contentBox, addTodoButton) {
   // Add event listener for form submission
   addTaskFormHTML.addEventListener("submit", (event) => {
     event.preventDefault();
-    const newTask = createTask(
+
+    const newTask = populateStorage(
       taskInputs.taskNameInput.value,
       taskInputs.taskDescriptionInput.value,
       taskInputs.taskDueDateInput.value,
-      taskInputs.taskPriorityInput.value
-      // taskInputs.taskColourInput.value
+      taskInputs.taskPriorityInput.value,
+      false
     );
+
     console.log("New Task Added:", newTask);
 
-    //div that will include the tasks (mainly)
-    const taskHolder = document.createElement("div");
-    taskHolder.classList.add("taskHolder");
+    // Clear the form inputs after submission
+    taskInputs.taskNameInput.value = "";
+    taskInputs.taskDescriptionInput.value = "";
+    taskInputs.taskDueDateInput.value = getTodayDate(); // Reset to today's date
+    taskInputs.taskPriorityInput.value = "high"; // Reset to default priority
 
-    //To show the task on the screen
-    groupTasksByDate();
+    // Show the task on the screen
     showTaskOnScreen(groupTasksByDate());
 
     addTaskDialogHTML.close();
@@ -146,31 +149,10 @@ function createAddTaskForm() {
     taskPriorityInput.appendChild(option);
   });
 
+  taskPriorityInput.value = "high"; // Set default priority to High
+
   taskPriority.appendChild(taskPriorityLabel);
   taskPriority.appendChild(taskPriorityInput);
-
-  // // Colour
-  // const taskColour = document.createElement("div");
-  // taskColour.classList.add("singleFormQuestion");
-
-  // const taskColourLabel = document.createElement("label");
-  // taskColourLabel.htmlFor = "taskColour";
-  // taskColourLabel.textContent = "Task Colour";
-
-  // const taskColourInput = document.createElement("select");
-  // taskColourInput.name = "taskColour";
-  // taskColourInput.id = "taskColour";
-
-  // const colours = ["Blue", "Red", "Green", "Yellow"];
-  // colours.forEach((colour) => {
-  //   const option = document.createElement("option");
-  //   option.value = colour.toLowerCase();
-  //   option.textContent = colour;
-  //   taskColourInput.appendChild(option);
-  // });
-
-  // taskColour.appendChild(taskColourLabel);
-  // taskColour.appendChild(taskColourInput);
 
   // Submit button
   const submitAddTaskFormHTML = document.createElement("button");
@@ -183,7 +165,6 @@ function createAddTaskForm() {
   addTaskFormHTML.appendChild(taskDescription);
   addTaskFormHTML.appendChild(taskDueDate);
   addTaskFormHTML.appendChild(taskPriority);
-  // addTaskFormHTML.appendChild(taskColour);
   addTaskFormHTML.appendChild(submitAddTaskFormHTML);
 
   const taskInputs = {

@@ -1,12 +1,12 @@
-import { todos } from "./newToDo";
 import close from "./img/close.png";
-import { createTask } from "./newToDo";
+import { populateStorage } from "./newToDo";
 import { groupTasksByDate } from "./taskDOM";
 import { showTaskOnScreen } from "./taskDOM";
 
 export function createEditTaskDialogDOM(contentBox, taskId) {
   // Find the task by ID
-  const task = todos.find((t) => t.id === taskId);
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  const task = tasks.find((t) => t.id === taskId);
 
   // Dialog settings
   const editTaskDialogHTML = document.createElement("dialog");
@@ -155,22 +155,17 @@ function createEditTaskForm(task, dialog) {
     // const { editTaskDialogHTML, addTaskFormHTML, taskInputs } =
     //   editTaskDialogHTML(contentBox);
 
-    // Find the index of the task in the todos []
-    const taskIndex = todos.findIndex((t) => t === task);
+    // Find the index of the task in the localStorage
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const updatedTasks = tasks.filter((t) => t.id !== task.id);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
 
-    if (taskIndex > -1) {
-      // Remove the task from the todos []
-      todos.splice(taskIndex, 1);
-
-      console.log("Updated todos:", todos); // debugging
-    }
-
-    const newTask = createTask(
+    const newTask = populateStorage(
       taskInputs.taskNameInput.value,
       taskInputs.taskDescriptionInput.value,
       taskInputs.taskDueDateInput.value,
-      taskInputs.taskPriorityInput.value
-      // taskInputs.taskColourInput.value
+      taskInputs.taskPriorityInput.value,
+      false
     );
     console.log("New Task Added:", newTask);
 
@@ -179,7 +174,7 @@ function createEditTaskForm(task, dialog) {
     // taskHolder.classList.add("taskHolder");
 
     //To show the task on the screen
-    groupTasksByDate();
+    // groupTasksByDate();
     showTaskOnScreen(groupTasksByDate());
 
     dialog.close();

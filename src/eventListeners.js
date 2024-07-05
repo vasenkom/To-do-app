@@ -24,14 +24,13 @@ export function setupEventListeners() {
   });
 
   todaySortButton.addEventListener("click", () => {
-    showTodayTask();
     showTaskOnScreen(showTodayTask());
   });
 
   allTasksButton.addEventListener("click", () => {
     groupTasksByDate();
     showTaskOnScreen(groupTasksByDate());
-    console.log("hi"); //debugging
+    console.log("All tasks are shown"); //debugging
   });
 }
 

@@ -1,18 +1,19 @@
-import { todos, createTask } from "./newToDo";
-import { getTodayDate } from "./greetings";
-import { showTaskOnScreen } from "./taskDOM.js";
-import { groupTasksByDate } from "./taskDOM.js";
+import { populateStorage } from "./newToDo.js";
+import { getTodayDate } from "./greetings.js";
+import { showTaskOnScreen, groupTasksByDate } from "./taskDOM.js";
 
 export function addDefaultTask() {
   const todayDate = getTodayDate();
-  if (todos.length < 1) {
-    const defaultTask = createTask(
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  if (tasks.length === 0) {
+    const defaultTask = populateStorage(
       "Add your first task",
       "Do it by clicking on Add Task in menu section",
       todayDate,
       "High",
       false
     );
+
     showTaskOnScreen(groupTasksByDate());
   }
 }
