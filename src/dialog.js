@@ -33,6 +33,12 @@ export function createAddTaskDialog(contentBox, addTodoButton) {
     groupTasksByDate();
     showTaskOnScreen(groupTasksByDate());
 
+    // Clean up inputs
+    taskInputs.taskNameInput.value = "";
+    taskInputs.taskDescriptionInput.value = "";
+    taskInputs.taskDueDateInput.value = "";
+    taskInputs.taskPriorityInput.value = "";
+
     addTaskDialogHTML.close();
   });
 
@@ -88,6 +94,7 @@ function createAddTaskForm() {
   taskNameInput.type = "text";
   taskNameInput.name = "TaskName";
   taskNameInput.id = "TaskName";
+  console.log("slkdmjasdnjkasdnjksa");
 
   taskName.appendChild(taskNameLabel);
   taskName.appendChild(taskNameInput);
