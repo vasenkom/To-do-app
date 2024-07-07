@@ -1,6 +1,6 @@
 # Todo Application
 
-This is a simple Todo application built using JavaScript, HTML, and CSS. It allows users to manage tasks by creating new ones, editing existing ones, and organizing tasks by due dates.
+This is a simple minimalistic Todo application built using JavaScript, HTML, and CSS. It allows users to manage tasks by creating new ones, editing existing ones, and organizing tasks by due dates. The tasks are stored in the localStorage - come leave your task in the Demo below!
 
 ## Demo
 
